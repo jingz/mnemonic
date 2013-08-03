@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html ng-app='app'>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>Mnemonic</title>
+        <link rel="stylesheet" href="lib/css/bootstrap-responsive.min.css" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="lib/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+
+        <script src="jquery-1.10.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="lib/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="angular.js" type="text/javascript" charset="utf-8"></script>
+        <script src="extend.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="config.js" type="text/javascript" charset="utf-8"></script>
+        <script src="adapter.js" type="text/javascript" charset="utf-8"></script>
+        <script src="active_record.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="models/deck.js" type="text/javascript" charset="utf-8"></script>
+        <script src="models/card.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="db.js" type="text/javascript" charset="utf-8"></script>
+        <script src="seed.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="bg.js" type="text/javascript"></script>
+
+        <script src="init.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body ng-controller='DeckController'>
+        <hr>
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <ul class="nav nav-tabs">
+                        <li ng-repeat='deck in decks' ng-class="{ active: selected_deck_id == deck.id }" >
+                            <a href="#" class="pull-left" ng-click='fetchCard(deck.id)'>{{deck.name}} </a>
+                        <li>
+                        <li title="Add Deck">
+                            <a id='btn-add-deck' href="#" 
+                                        ng-click="createDeck()" 
+                                        class='btn btn-success'
+                                        data-animation='true'
+                                        data-title="Tip",
+                                        data-content="Add a first deck">
+                                <i class="icon-plus"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div ng-switch="mode">
+                    <div class="span12" ng-switch-when='manage'>
+                        <div ng-show="selected_deck_id">
+                            <div class="alert alert-warning" 
+                                ng-show="cards.length == 0"
+                                ng-animate="{show: 'test-show', hide: 'test-hide'}">
+                                <button type="button" class="close" data-dismiss='alert'>&times;</button>
+                                <h4> No Card! </h4> Please add a new one.
+                            </div>
+                            <div class="span3 border">
+                                <button class='btn btn-danger' 
+                                        ng-click='removeDeck()'
+                                        title="Delete Deck and All Cards" >
+                                   <i class='icon-remove'></i>
+                                </button>
+                                <button class='btn' 
+                                        ng-click='play()'
+                                        ng-show="cards.length > 0" >
+                                   <i class='icon-play'></i>
+                                </button>
+                            </div>
+                            <div class="span8">
+                                <form class="form-inline" accept-charset="utf-8">
+                                    <textarea ng-model="card.native" placeholder="Native" required ></textarea>
+                                    <textarea ng-model="card.target" placeholder="Target" required ></textarea>
+                                    <button type="submit" class='btn' ng-click='saveCard(card)'>
+                                        <i class='icon-plus'></i>
+                                        Add Card
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <table class="table table-striped"
+                               ng-show="cards.length > 0"
+                               ng-animate="{show: 'test-show', hide: 'test-hide'}">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="span3">Native</th>
+                                    <th width="40%">Target</th>
+                                    <th> </th>
+                                 </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat='c in cards'>
+                                    <td>{{$index + 1}}</td>
+                                    <td class="span3">{{c.native}}</td>
+                                    <td >{{c.target}}</td>
+                                    <td>
+                                        <button class='btn btn-mini' ng-click="removeCard(c.id)">
+                                           <i class='icon-remove'></i>
+                                        </button> 
+                                        <button class='btn btn-mini' ng-click="setCard(c)">
+                                            <i class='icon-edit'></i>
+                                        </button> 
+                                     </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!-- end manage -->
+                    <div class='span12' ng-switch-when='playing'> 
+                        <button class='btn pull-left' ng-click='stop()'>
+                            <i class='icon-stop'></i>
+                         </button>
+                     <div>
+<div class='row-fluid' ng-controller='GameController'>
+    <form class="form-inline" accept-charset="utf-8">
+        <strong class='pull-right well'>Correct: {{score}} / {{cards.length}}</strong>
+        <div class="pagination">
+            <ul>
+               <li ng-repeat="dummay in pages()">
+                  <a href="#" ng-click='page = $index'>{{ $index + 1 }}</a> 
+               </li> 
+            </ul>
+        </div>
+        <table class='table table-striped'>
+            <tbody>
+            <tr ng-repeat='c in cards'>
+                <td class='td-right span3'>
+                    <strong> {{c.native}} </strong>
+                </td>
+                <td>
+                    <word-input word="c.target" 
+                    correct="addScore"></word-input>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+                         </div>
+                     </div>
+                 </div><!-- end switch --> 
+             </div> 
+        </div>
+    </body>
+</html>

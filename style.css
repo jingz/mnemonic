@@ -1,0 +1,40 @@
+body {
+    font-size: 16px;
+}
+
+.char {
+    width: 14px;
+    text-align: center;
+    font-size: 1em !important;
+    font-weight: bold;
+}
+
+.td-right {
+    text-align: right !important;
+}
+
+/*
+.show, .hide {
+    -webkit-transition:all linear 1.5s;
+    -moz-transition:all linear 1.5s;
+    -ms-transition:all linear 1.5s;
+    -o-transition:all linear 1.5s;
+    transition:all linear 1.5s;
+}
+*/
+
+.test-show, .test-hide {
+    -webkit-transition:1s linear all;
+    -moz-transition:1s linear all;
+    -ms-transition:1s linear all;
+    -o-transition:1s linear all;
+    transition:1s linear all;
+}
+
+.test-show.test-show-active, .test-hide {
+    opacity: 1;
+}
+
+.test-hide.test-hide-active, .test-show {
+    opacity: 0;
+}
